@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Fish Unblocked</title>
+    <style>
+        :root {
+            --water-surface: #0077b6;
+            --water-mid: #001d3d;
+            --water-abyss: #000814;
+            --stem-color: #064e3b;
+            --leaf-dark: #132a13;
+            --leaf-light: #2d6a4f;
+            --text-navy: #000b1a; 
+            --fish-body: #ff9f1c;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, var(--water-surface), var(--water-mid) 40%, var(--water-abyss) 100%);
+            font-family: 'Arial Black', sans-serif;
+            overflow: hidden; display: flex; justify-content: center; align-items: center;
+            perspective: 1200px;
+        }
+
+        /* --- TITLE --- */
+        .title-container { z-index: 50; text-align: center; }
+        h1 {
+            color: var(--text-navy); font-size: clamp(3rem, 12vw, 7rem);
+            text-transform: uppercase; margin: 0; letter-spacing: -4px; line-height: 0.8;
+            text-shadow: 15px 15px 35px rgba(0, 0, 0, 1), 0px 0px 10px rgba(0, 119, 182, 0.4);
+            cursor: pointer; transition: transform 0.3s ease;
+        }
+        h1:hover { transform: scale(1.05); filter: brightness(1.2); }
+
+        /* --- TRANSITION OVERLAY --- */
+        #transition-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; }
+        .burst-bubble {
+            position: absolute; background: rgba(255, 255, 255, 0.7); border: 1px solid white;
+            border-radius: 50%; bottom: -150px;
+        }
+        @keyframes fillAndHold {
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-115vh); opacity: 1; }
+        }
+
+        /* --- FISH --- */
+        .fish-container { position: absolute; left: -200px; display: flex; align-items: center; pointer-events: none; }
+        .fish-body {
+            position: relative; width: 50px; height: 30px; background: var(--fish-body);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .fish-body::after { content: ''; position: absolute; top: 8px; right: 10px; width: 5px; height: 5px; background: #000; border-radius: 50%; }
+        .fish-tail { width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 18px solid var(--fish-body); margin-right: -5px; }
+        @keyframes swimAcross { from { left: -200px; } to { left: 115vw; } }
+
+        /* --- SEAWEED --- */
+        .seaweed-bed { position: absolute; bottom: -20px; width: 100%; height: 100%; display: flex; justify-content: space-around; align-items: flex-end; pointer-events: none; }
+        .seaweed-unit { position: relative; display: flex; flex-direction: column; align-items: center; transform-origin: bottom center; animation: twistSway 8s ease-in-out infinite; opacity: 0.5; z-index: 5; }
+        .stem { width: 4px; height: 100%; background: var(--stem-color); border-radius: 10px; }
+        .leaf { position: absolute; width: 20px; height: 35px; background: linear-gradient(45deg, var(--leaf-dark), var(--leaf-light)); border-radius: 50% 0 50% 0; }
+        .leaf.left { left: -18px; transform-origin: right center; }
+        .leaf.right { right: -18px; transform-origin: left center; border-radius: 0 50% 0 50%; }
+        @keyframes twistSway { 0%, 100% { transform: rotate(-3deg) rotateY(-10deg); } 50% { transform: rotate(5deg) rotateY(30deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="title-container">
+        <h1 id="mainTitle">Deep Fish<br>Unblocked</h1>
+    </div>
+
+    <div id="transition-overlay"></div>
+    <div class="seaweed-bed" id="oceanFloor"></div>
+
+    <script>
+        const floor = document.getElementById('oceanFloor');
+        
+        // --- 1. THE "CLEVER" BOSS KEY FEATURE ---
+        let lastKeyTime = 0;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '8') {
+                const currentTime = new Date().getTime();
+                if (currentTime - lastKeyTime < 500) { // 500ms for double tap
+                    window.location.href = "https://clever.com/in/auth"; 
+                }
+                lastKeyTime = currentTime;
+            }
+        });
+
+        // --- 2. THE TRANSITION ---
+        const title = document.getElementById('mainTitle');
+        const overlay = document.getElementById('transition-overlay');
+
+        title.addEventListener('click', () => {
+            // Spawn massive amount of bubbles to create a solid curtain
+            for (let i = 0; i < 300; i++) {
+                setTimeout(() => {
+                    const b = document.createElement('div');
+                    const size = Math.random() * 120 + 40;
+                    b.className = 'burst-bubble';
+                    b.style.width = size + 'px'; b.style.height = size + 'px';
+                    b.style.left = Math.random() * 100 + 'vw';
+                    b.style.animation = `fillAndHold 1.4s ease-out forwards`;
+                    b.style.animationDelay = (i * 0.003) + 's';
+                    overlay.appendChild(b);
+                }, i * 3);
+            }
+            // Transition precisely when screen is covered
+            setTimeout(() => { window.location.href = "Games.html"; }, 1600); 
+        });
+
+        // --- 3. BACKGROUND ELEMENTS (Seaweed & Fish) ---
+        for (let i = 0; i < 7; i++) {
+            const unit = document.createElement('div');
+            unit.className = 'seaweed-unit';
+            unit.style.height = `${Math.floor(Math.random() * 30 + 50)}vh`;
+            unit.style.animationDelay = `${Math.random() * -10}s`;
+            const stem = document.createElement('div'); stem.className = 'stem'; unit.appendChild(stem);
+            const leafDensity = 25;
+            for (let j = 0; j < leafDensity; j++) {
+                const leaf = document.createElement('div');
+                leaf.className = `leaf ${j % 2 === 0 ? 'left' : 'right'}`;
+                leaf.style.bottom = `${(j / leafDensity) * 100}%`;
+                leaf.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+                unit.appendChild(leaf);
+            }
+            floor.appendChild(unit);
+        }
+
+        function createSingleFish(isFar) {
+            const container = document.createElement('div'); container.className = 'fish-container';
+            const tail = document.createElement('div'); tail.className = 'fish-tail';
+            const body = document.createElement('div'); body.className = 'fish-body';
+            container.appendChild(tail); container.appendChild(body);
+            const speed = isFar ? (Math.random() * 5 + 15) : (Math.random() * 5 + 9); 
+            container.style.top = `${Math.random() * 70 + 15}vh`;
+            container.style.animation = `swimAcross ${speed}s linear forwards`;
+            if (isFar) {
+                container.style.transform = `scale(${Math.random() * 0.2 + 0.3})`;
+                container.style.opacity = "0.4"; container.style.filter = "blur(2px)"; container.style.zIndex = "2";
+            } else {
+                container.style.transform = `scale(${Math.random() * 0.3 + 0.7})`; container.style.zIndex = "25";
+            }
+            document.body.appendChild(container);
+            setTimeout(() => container.remove(), speed * 1000);
+            return speed;
+        }
+
+        function fishManager() {
+            const groupSize = Math.floor(Math.random() * 3) + 1;
+            const isFar = Math.random() > 0.5;
+            for (let i = 0; i < groupSize; i++) {
+                setTimeout(() => { createSingleFish(isFar); }, i * 700);
+            }
+            setTimeout(fishManager, 13000 + Math.random() * 5000);
+        }
+        fishManager();
+    </script>
+</body>
+</html>
